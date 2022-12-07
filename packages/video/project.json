@@ -1,0 +1,115 @@
+{
+  "name": "video",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "packages/video/src",
+  "prefix": "my-org",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/video",
+        "index": "packages/video/src/index.html",
+        "main": "packages/video/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "packages/video/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "packages/video/src/favicon.ico",
+          "packages/video/src/assets"
+        ],
+        "styles": ["packages/video/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "packages/video/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "packages/video/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "video:build:production"
+        },
+        "development": {
+          "browserTarget": "video:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "video:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "packages/video/**/*.ts",
+          "packages/video/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/video/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/angular:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "video:build",
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "video:build:development"
+        },
+        "production": {
+          "buildTarget": "video:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
